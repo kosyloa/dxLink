@@ -5,6 +5,7 @@ import { Link, Route, Routes, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Header } from './header'
+import { BacktestPage } from '../backtest'
 import { DebugConsole } from '../debug-console'
 import { AsyncApiProtocol } from '../protocol/asyncapi'
 
@@ -61,6 +62,17 @@ export function Layout() {
             </Link>
           </MenuItem>
           <MenuItem>
+            <Link to="/backtest">
+              <Button
+                kind={'normal'}
+                size={'small'}
+                color={location.pathname === '/backtest' ? 'accent' : 'primary'}
+              >
+                Backtest
+              </Button>
+            </Link>
+          </MenuItem>
+          <MenuItem>
             <Link to="/protocol">
               <Button
                 kind={'normal'}
@@ -76,6 +88,7 @@ export function Layout() {
       <Content>
         <Routes>
           <Route path="/" element={<DebugConsole />} />
+          <Route path="/backtest" element={<BacktestPage />} />
           <Route path="/protocol" element={<AsyncApiProtocol />} />
         </Routes>
       </Content>
