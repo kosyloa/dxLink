@@ -7,6 +7,7 @@ import type {
   BacktestCalculationResult,
   BacktestCandle,
   StrategyAnalytics,
+  StrategyFillReport,
   StrategyTradeReport,
 } from './backtest-api'
 import { BacktestChart } from './backtest-chart'
@@ -33,6 +34,7 @@ export function BacktestPage() {
     BacktestCalculationResult | undefined
   >()
   const [strategyTradeReport, setStrategyTradeReport] = useState<StrategyTradeReport | undefined>()
+  const [strategyFillReport, setStrategyFillReport] = useState<StrategyFillReport | undefined>()
   const [strategyAnalytics, setStrategyAnalytics] = useState<StrategyAnalytics | undefined>()
 
   const handleCalculate = async ({ baseUrl, params, content }: BacktestFormSubmit) => {
@@ -46,11 +48,13 @@ export function BacktestPage() {
       setCandles(normalized.candles)
       setCalculationResult(normalized.calculationResult)
       setStrategyTradeReport(normalized.strategyTradeReport)
+      setStrategyFillReport(normalized.strategyFillReport)
       setStrategyAnalytics(normalized.strategyAnalytics)
     } catch (e) {
       setCandles([])
       setCalculationResult(undefined)
       setStrategyTradeReport(undefined)
+      setStrategyFillReport(undefined)
       setStrategyAnalytics(undefined)
       const backtestError = unknownToBacktestError(e)
       setError({ summary: backtestError.message, details: backtestError.details })
@@ -71,6 +75,7 @@ export function BacktestPage() {
 
       <BacktestResults
         strategyTradeReport={strategyTradeReport}
+        strategyFillReport={strategyFillReport}
         strategyAnalytics={strategyAnalytics}
       />
     </Root>

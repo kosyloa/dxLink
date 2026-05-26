@@ -154,6 +154,26 @@ export interface StrategyTradeReport {
   trades?: StrategyTrade[]
 }
 
+export interface StrategyFill {
+  fillNumber?: number
+  fill_number?: number
+  direction?: string
+  legType?: string
+  leg_type?: string
+  signal?: string
+  side?: string
+  barIndex?: number
+  bar_index?: number
+  timeMillis?: number | string
+  time_millis?: number | string
+  price?: number
+  size?: number
+}
+
+export interface StrategyFillReport {
+  fills?: StrategyFill[]
+}
+
 export interface StrategyAnalytics {
   equitySeries?: number[]
   equity_series?: number[]
@@ -197,6 +217,8 @@ export interface BacktestResponse {
   strategy_trade_report?: StrategyTradeReport
   strategyAnalytics?: StrategyAnalytics
   strategy_analytics?: StrategyAnalytics
+  strategyFillReport?: StrategyFillReport
+  strategy_fill_report?: StrategyFillReport
   error?: ScriptError
 }
 
@@ -346,12 +368,14 @@ export function normalizeBacktestResponse(response: BacktestResponse): {
   candles: BacktestCandle[]
   calculationResult?: BacktestCalculationResult
   strategyTradeReport?: StrategyTradeReport
+  strategyFillReport?: StrategyFillReport
   strategyAnalytics?: StrategyAnalytics
 } {
   return {
     candles: response.candles ?? [],
     calculationResult: response.calculationResult ?? response.calculation_result,
     strategyTradeReport: response.strategyTradeReport ?? response.strategy_trade_report,
+    strategyFillReport: response.strategyFillReport ?? response.strategy_fill_report,
     strategyAnalytics: response.strategyAnalytics ?? response.strategy_analytics,
   }
 }

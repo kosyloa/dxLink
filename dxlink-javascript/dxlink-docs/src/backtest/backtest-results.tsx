@@ -2,7 +2,12 @@ import { TableCell, TableHeadCell } from '@dxfeed/ui-kit/Table'
 import { unit } from '@dxfeed/ui-kit/utils'
 import styled from 'styled-components'
 
-import type { StrategyAnalytics, StrategyTradeReport } from './backtest-api'
+import type {
+  StrategyAnalytics,
+  StrategyFillReport,
+  StrategyTradeReport,
+} from './backtest-api'
+import { BacktestFillsTable } from './backtest-fills-table'
 import { BacktestTradesTable } from './backtest-trades-table'
 import { ContentTemplate } from '../common/content-template'
 import { DataTable, DataTableRow } from '../debug-console/feed-data'
@@ -53,22 +58,35 @@ function formatNullableNumber(value: unknown, digits = 4): string {
 
 export interface BacktestResultsProps {
   strategyTradeReport?: StrategyTradeReport
+  strategyFillReport?: StrategyFillReport
   strategyAnalytics?: StrategyAnalytics
 }
 
-export function BacktestResults({ strategyTradeReport, strategyAnalytics }: BacktestResultsProps) {
+export function BacktestResults({
+  strategyTradeReport,
+  strategyFillReport,
+  strategyAnalytics,
+}: BacktestResultsProps) {
   const performance = strategyAnalytics?.performance
   const trades = strategyTradeReport?.trades ?? []
+  const fills = strategyFillReport?.fills ?? []
 
   const hasPerformance = performance !== undefined
   const hasTrades = trades.length > 0
+  const hasFills = fills.length > 0
 
-  if (!hasPerformance && !hasTrades) {
+  if (!hasPerformance && !hasTrades && !hasFills) {
     return null
   }
 
   return (
     <Section>
+      {hasFills && (
+        <ContentTemplate title="Fills">
+          <BacktestFillsTable fills={fills} />
+        </ContentTemplate>
+      )}
+
       {hasTrades && (
         <ContentTemplate title="Trades">
           <BacktestTradesTable trades={trades} />
